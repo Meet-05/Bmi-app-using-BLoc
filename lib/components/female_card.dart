@@ -24,6 +24,7 @@ class _FemaleCardState extends State<FemaleCard> {
             initialData: true,
             stream: genderBloc.genderStream,
             builder: (context, snapshot) {
+              print("page reloaeded");
               print('female is  ${snapshot.data}');
               return ReusableWidget(
                 colour: snapshot.data ? kactiveCardColor : kinactiveCardColor,

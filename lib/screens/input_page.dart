@@ -12,8 +12,6 @@ import '../components/bottom_button.dart';
 // import '../bmi_brain.dart';
 import '../components/height_card.dart';
 import '../bloc/brain.dart';
-import '../components/female_card.dart';
-import '../components/male_card.dart';
 
 enum Gender { male, female }
 
@@ -23,9 +21,6 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int height = 180;
-  int weight = 60;
-  int age = 10;
   Gender selectedGender;
 
   @override
@@ -43,22 +38,56 @@ class _InputPageState extends State<InputPage> {
                 child: Row(
               children: [WeightCard(), AgeCard()],
             )),
-            BottomButton(
-              onPressed: () {
-                BmiBrain calcBmi = BmiBrain();
-
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ResultPage(
-                              bmiValue: calcBmi.calculateBmi(),
-                              result: calcBmi.getResult(),
-                              interpretation: calcBmi.geInterpretation(),
-                            )));
-                Navigator.pushNamed(context, '/result');
-              },
-              labelText: 'Calculate',
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              height: 80,
+              width: double.infinity,
+              color: Colors.pink,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  StreamBuilder(
+                      initialData: '9.6',
+                      stream: BmiBrain.bmiStream,
+                      builder: (context, snapshot) {
+                        return Text(
+                          '${snapshot.data}',
+                          style: kBottomButtonText.copyWith(fontSize: 40.0),
+                        );
+                      }),
+                  VerticalDivider(
+                    width: 50.0,
+                    color: Colors.white,
+                  ),
+                  StreamBuilder(
+                      initialData: 'You are underweight',
+                      stream: BmiBrain.resultStream,
+                      builder: (context, snapshot) {
+                        return Text(
+                          'You are ${snapshot.data}',
+                          style: kLableTextStyle.copyWith(color: Colors.white),
+                        );
+                      })
+                ],
+              ),
             )
+            // BottomButton(
+            //   onPressed: () {
+            //     BmiBrain calcBmi = BmiBrain();
+            //     print(calcBmi.calculateBmi());
+
+            //     // Navigator.push(
+            //     //     context,
+            //     //     MaterialPageRoute(
+            //     //         builder: (context) => ResultPage(
+            //     //               bmiValue: calcBmi.calculateBmi(),
+            //     //               result: calcBmi.getResult(),
+            //     //               interpretation: calcBmi.geInterpretation(),
+            //     //             )));
+            //     // Navigator.pushNamed(context, '/result');
+            //   },
+            //   labelText: 'Calculate',
+            // )
           ],
         ));
   }

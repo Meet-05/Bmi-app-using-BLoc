@@ -11,7 +11,7 @@ class SliderBloc {
 
   SliderBloc() {
     heightStream.listen((event) {
-      BmiBrain.height = event;
+      BmiBrain().heightSink.add(event.round());
     });
   }
 

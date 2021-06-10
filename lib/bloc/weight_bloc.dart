@@ -1,5 +1,6 @@
 import 'dart:async';
 import './brain.dart';
+import './brain.dart';
 
 enum counterAction { increment, decrement }
 
@@ -7,7 +8,7 @@ class WeightBloc {
   static int weight;
 
   //stream for the data
-  final _stateStreamController = StreamController<int>();
+  final _stateStreamController = StreamController<int>.broadcast();
   StreamSink<int> get weightSink => _stateStreamController.sink;
   Stream<int> get weightStream => _stateStreamController.stream;
 
@@ -25,7 +26,8 @@ class WeightBloc {
         weight--;
       }
       weightSink.add(weight);
-      BmiBrain.weight = weight;
+      BmiBrain().weightSink.add(weight);
+      // BmiBrain.weight = weight;
     });
   }
 
